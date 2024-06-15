@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const todoSchema = new Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     title: {
         type: String,
     },

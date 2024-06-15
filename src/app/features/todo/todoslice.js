@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchtasks = createAsyncThunk('tasks/fetchtasks', async () => {
-  const response = await fetch(`http://localhost:5000/task/fetchtasks`);
+  const response = await fetch(`http://localhost:5000/task/fetchtasks`, {
+    method: 'GET',
+    headers: {
+      'content-type': 'application/json',
+      'auth-token': localStorage.getItem('token')
+    },
+  });
   return response.json();
 });
 
@@ -10,6 +16,7 @@ export const addtask = createAsyncThunk('tasks/addtask', async (newTask) => {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
+      'auth-token': localStorage.getItem('token')
     },
     body: JSON.stringify(newTask),
   });
@@ -51,6 +58,7 @@ export const todoSlice = createSlice({
       state.status = 'loading';
     });
     builder.addCase(fetchtasks.fulfilled, (state, action) => {
+        state.status = 'success';
         state.tasks = action.payload;
     });
     builder.addCase(fetchtasks.rejected, (state, action) => {  

@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Tasks = require('../models/todoSchema');
+const fetchUser = require('../middleware/fetchUser');
 
-router.get('/fetchtasks', async (req, res) => {
-  const tasks = await Tasks.find({});
+router.get('/fetchtasks', fetchUser, async (req, res) => {
+  const tasks = await Tasks.find({ userId: req.user.id});
   res.json(tasks);
 })
 
-router.post('/addtask', async (req, res) => {
+router.post('/addtask', fetchUser, async (req, res) => {
     const {title,description} = req.body;
-    const newTask = new Tasks({ title, description });
+    const newTask = new Tasks({ userId: req.user.id, title, description });
     const addedTask = await newTask.save();
     res.send(addedTask);
 })

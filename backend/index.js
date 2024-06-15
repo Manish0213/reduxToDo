@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(cors())
 
 app.use('/task', require('./routes/todoRoute'));
+app.use('/auth', require('./routes/userRoute'));
 
 connectToDB();
 
